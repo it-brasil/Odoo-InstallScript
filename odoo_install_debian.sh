@@ -85,6 +85,11 @@ if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
   sudo gdebi --n `basename $_url`
   sudo ln -s /usr/local/bin/wkhtmltopdf /usr/bin
   sudo ln -s /usr/local/bin/wkhtmltoimage /usr/bin
+  if [ "`getconf LONG_BIT`" == "64" ];then
+    sudo rm wkhtmltox_0.12.5-1.trusty_amd64.deb
+  else
+    sudo rm wkhtmltox_0.12.5-1.trusty_i386.deb
+  fi
 else
   echo "Wkhtmltopdf isn't installed due to the choice of the user!"
 fi
@@ -237,7 +242,7 @@ echo -e "* Start ODOO on Startup"
 sudo update-rc.d $OE_CONFIG defaults
 
 echo -e "* Starting Odoo Service"
-sudo su root -c "/etc/init.d/$OE_CONFIG start"
+# sudo su root -c "/etc/init.d/$OE_CONFIG start"
 echo "-----------------------------------------------------------"
 echo "Done! The Odoo server is up and running. Specifications:"
 echo "Port: $OE_PORT"
