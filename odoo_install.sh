@@ -39,7 +39,7 @@ WEBSITE_NAME="_"
 # Set the default Odoo longpolling port (you still have to use -c /etc/odoo-server.conf for example to use this.)
 LONGPOLLING_PORT="8072"
 # Set to "True" to install certbot and have ssl enabled, "False" to use http
-ENABLE_SSL="True"
+ENABLE_SSL="False"
 # Provide Email to register ssl certificate
 ADMIN_EMAIL="odoo@example.com"
 ##
@@ -99,6 +99,11 @@ if [ $INSTALL_WKHTMLTOPDF = "True" ]; then
   sudo gdebi --n `basename $_url`
   sudo ln -s /usr/local/bin/wkhtmltopdf /usr/bin
   sudo ln -s /usr/local/bin/wkhtmltoimage /usr/bin
+  if [ "`getconf LONG_BIT`" == "64" ];then
+    sudo rm -rf wkhtmltox_0.12.5-1.trusty_amd64.deb
+  else
+    sudo rm -rf wkhtmltox_0.12.5-1.trusty_i386.deb
+  fi
 else
   echo "Wkhtmltopdf isn't installed due to the choice of the user!"
 fi
@@ -364,7 +369,7 @@ else
 fi
 
 echo -e "* Starting Odoo Service"
-sudo su root -c "/etc/init.d/$OE_CONFIG start"
+#sudo su root -c "/etc/init.d/$OE_CONFIG start"
 echo "-----------------------------------------------------------"
 echo "Done! The Odoo server is up and running. Specifications:"
 echo "Port: $OE_PORT"
